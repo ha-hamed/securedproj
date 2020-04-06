@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block body %}
+
+  <h1>Create secured resource</h1>
+  <form action="." method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+  <div>
+    {{ msg }}
+  </div>
+
+{% endblock %}
