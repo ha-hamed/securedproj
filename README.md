@@ -11,13 +11,14 @@
 
 ### REST API
 - `/api/token-auth/` - Securing endpoint for registerd users. The body takes a username and password of the user in application JSON. Returns an authorization token which then its used for future secured API endpoints by including it as `Authorization` header with prefix `token` before value obtained.
+
 	```
-  {
+  	{
 		"username": "username",
 		"password": "password"
-  }
+  	}
 	```
-Response:
+	Response:
 	```
 	{
 		"token": "<str:token>"
@@ -25,6 +26,7 @@ Response:
 	```
 
 - `/SecuredResource/` - Secured endpoint for adding new elements. The file data can be set from Type option. Type 1 being a URL and Type 2 a file. Post data should be form-data!
+	
 	```
 	{
 		"Type": 1,
@@ -38,7 +40,7 @@ Response:
 		"File": <filedata>
 	}
 	```
-Response:
+	Response:
 	```
 	{
 		"url": "<str:UID>",
@@ -47,15 +49,16 @@ Response:
 	```
 
 - `/data/<str:UID>/` - Open endpoint to get a particular secured resource on generated URL with form data.
-  ```
+  
+  	```
 	{
-  	"password": "W26KVAFBPC"
+  		"password": "W26KVAFBPC"
 	}
 	```
 
 - `/GetStat` - Secured endpoint to get statistics on the number of items of each type, added everyday, that have been visited or not visited.
 
-  ```
+  	```
 	{
 		"2020-04-05": {
 			"Files": 3,
@@ -75,7 +78,7 @@ Response:
 ## Instructions
 - `git clone https://github.com/abedinski/securedproj.git`.
 - cd to project folder.
--`docker-compose up -d --build` - Docker all set.
+- `docker-compose up -d --build` - Docker all set.
 - Update `settings.py` to reflect database`.
 - Migrate database `docker-compose exec web python manage.py migrate`.
 - `docker-compose exec web python manage.py createsuperuser` since the app requires using the admin.
