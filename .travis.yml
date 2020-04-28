@@ -5,6 +5,7 @@ python:
 
 services:
   - docker
+  - docker-compose
 
 install:
   - docker-compose build
