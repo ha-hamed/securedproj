@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
-    </head>
-    <body>
-        <div class="container">
-          <nav class="navbar navbar-expand-sm bg-light navbar-light">
-            <a class="navbar-brand" href="/">Home</a>
-            {% if request.user.is_authenticated %}
-              <div class="row ml-auto">
-                <ul class="navbar-nav ml-auto">
-                  <li class="nav-item active">
-                      <a class="nav-link" href="{% url 'logout'%}">Logout</a>
-                  </li>
-                </ul>
-              </div>
-            {% endif %}
-          </nav>
-
-          {% block body %}
-          {% endblock %}
-
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+      integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-expand-sm bg-light navbar-light">
+        <a class="navbar-brand" href="/">Home</a>
+        {% if request.user.is_authenticated %}
+        <div class="row ml-auto">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'logout'%}">Logout</a>
+            </li>
+          </ul>
         </div>
-    </body>
+        {% endif %}
+      </nav>
+
+      {% block body %} {% endblock %}
+    </div>
+  </body>
 </html>

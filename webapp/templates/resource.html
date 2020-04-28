@@ -1,10 +1,15 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} {% load crispy_forms_tags %} {% block body %}
 
-{% block body %}
+<h1>Resource</h1>
+<hr />
+<div class="alert alert-success" role="alert">
+  <label for="pwd">Password:</label> {{ password }}
+  <div />
+  <label for="url">Url:</label> <a href="{{url}}" target="_Blank">{{url}}</a>
+</div>
 
-  <h1>Resource</h1>
-  <div class="alert alert-success" role="alert">
-    <a href="{{url}}" target="_Blank">{{url}}</a>
-  </div>
+<div>
+  {{ msg }}
+</div>
 
 {% endblock %}

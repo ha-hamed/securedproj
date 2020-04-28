@@ -1,43 +1,38 @@
-from . import models
 from django import forms
 
-import secrets
-import string
-import datetime
+from .functions import (get_secured_resource_model, save_secured_resource,
+                        validate_secured_resource)
+
 
 class SecuredResourceForm(forms.ModelForm):
+
     class Meta:
-        model = models.SecuredResource
-        fields = ('Type','URL', 'File')
+        model = get_secured_resource_model()
+        fields = model.fields()
+
+    def secured_resource_form(self, save=True):
+        secured_resource = super(SecuredResourceForm, self)
+        if save:
+            return secured_resource.save(commit=False)
+        return secured_resource.clean()
+
+    def clean(self):
+        # get the cleaned data from default clean, returns cleaned_data
+        cleaned_data = SecuredResourceForm.secured_resource_form(
+            self, save=False)
+
+        validate_secured_resource(cleaned_data)
+        return cleaned_data
 
     def save(self, user=None):
-        SecuredResource = super(SecuredResourceForm, self).save(commit=False)
+        secured_resource = self.secured_resource_form(self)
+        return save_secured_resource(secured_resource)
 
-        res = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for i in range(50)) # Generate Cryptographically Secure Random String
-        p = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for i in range(10)) # Generate Cryptographically Secure Random String
-
-        if(SecuredResource.Type == "1"):
-            SecuredResource.File = ""
-        else:
-            SecuredResource.URL= ""
-
-        SecuredResource.UID = res
-        SecuredResource.Password = p
-        SecuredResource.save()
-
-        # Create SecuredResourceStatistics Object for newly saved resource if it is not already created for a given date.
-        if(models.SecuredResourceStatistics.objects.filter(Date=datetime.date.today(), resource=SecuredResource).count() > 0 ):
-            pass
-        else:
-            rs = models.SecuredResourceStatistics(Date=datetime.date.today(), resource=SecuredResource)
-            rs.save()
-        return SecuredResource
 
 class PasswordForm(forms.ModelForm):
     class Meta:
-        model = models.SecuredResource
-        fields = ('Password',)
+        model = get_secured_resource_model()
+        fields = model.field_password()
 
     def save(self, user=None):
-        SR = super(SecuredResourceForm, self).save(commit=False)
-        return SR
+        return self.secured_resource_form(self)

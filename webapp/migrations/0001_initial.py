@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('Type', models.CharField(choices=[('1', 'Link'), ('2', 'File')], default='1', max_length=2)),
                 ('URL', models.URLField(blank=True)),
                 ('File', models.FileField(blank=True, upload_to='')),
-                ('UID', models.CharField(max_length=100)),
+                ('uid', models.CharField(max_length=100)),
                 ('Password', models.CharField(max_length=100)),
                 ('Status', models.CharField(choices=[('1', 'Active'), ('2', 'Expired')], default='1', max_length=2)),
                 ('DateTime', models.DateTimeField(auto_now_add=True)),

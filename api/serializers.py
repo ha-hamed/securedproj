@@ -1,15 +1,19 @@
 from rest_framework import serializers
-from webapp import models
+from webapp.functions import (get_secured_resource_model,
+                              validate_secured_resource)
+
 
 class SecuredResourceSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.SecuredResource
-        fields = ('Type', 'URL', 'File')
+        model = get_secured_resource_model()
+        fields = model.fields()
 
-class GetSecuredResourceSerializer(serializers.ModelSerializer):
+    def validate(self, data):
+        validate_secured_resource(data, True)
+        return data
+
+
+class PasswordSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.SecuredResource
-        fields = ('Type', 'URL', 'File', 'UID', 'Password')
-
-class FileSerializer(serializers.Serializer):
-    file = serializers.FileField()
+        model = get_secured_resource_model()
+        fields = model.field_password()

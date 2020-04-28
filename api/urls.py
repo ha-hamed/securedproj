@@ -1,13 +1,16 @@
 from django.urls import path
-from . import views
-from rest_framework.routers import DefaultRouter
-from django.conf.urls import include, re_path
 
-app_name = 'api'    # for namespace. it is important to avoid name problems in {% url %}
+from . import views
+
+# for namespace, it is important to avoid name problems in {% url %}
+app_name = "api"
 
 urlpatterns = [
-    path('GetStat/', views.GetStatView.as_view(), name='GetStat'),      # Authorization token required
-    path('SecuredResource/', views.SecuredResourceView.as_view(), name='SecuredResource'),      # Authorization token required
-    path('data/<str:UID>', views.GetSecuredResourceView.as_view(), name='data')     # Open to Anonymous Users
+    path("get_stat", views.GetStatView.as_view(),
+         name="get_stat"),  # authorization token required
+    path("secured_resource", views.SecuredResourceView.as_view(),
+         name="secured_resource"),  # authorization token required
+    path("data/<str:uid>", views.GetSecuredResourceView.as_view(),
+         name="data")  # open to anonymous users
 
 ]

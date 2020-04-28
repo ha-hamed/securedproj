@@ -1,45 +1,83 @@
-from django.db import models
 from django.contrib.auth.models import User
-from django.dispatch import receiver
+from django.db import models
 from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 STATUS = (
-    ('1','Active'),
-    ('2','Expired'),
+    (1, 'active'),
+    (2, 'expired')
 )
 TYPES = (
-    ('1','Link'),
-    ('2','File'),
+    (1, 'link'),
+    (2, 'file')
 )
 
+
 class UserStatistics(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='userstat')
-    LastUserAgent = models.CharField(max_length=200,)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, primary_key=True, related_name='user_stat')
+    last_user_agent = models.CharField(max_length=200,)
+
+    class Meta:
+        db_table = "user_statistics"
+
 
 class SecuredResource(models.Model):
-    Type = models.CharField(max_length=2, choices=TYPES, default='1')
-    URL = models.URLField(max_length=200, blank=True)
-    File = models.FileField(upload_to='', max_length=100, blank=True)
-    UID =  models.CharField(max_length=100)
-    Password =  models.CharField(max_length=100)
-    Status = models.CharField(max_length=2, choices=STATUS, default='1')
-    DateTime = models.DateTimeField(auto_now_add=True)
+    res_type = models.IntegerField("Resource Type", choices=TYPES, default=1)
+    url = models.URLField("Resource URL", max_length=200,
+                          blank=True, default='')
+    res_file = models.FileField(
+        "Resource File", upload_to='', max_length=100, blank=True, default='')
+    uid = models.CharField(max_length=100)
+    password = models.CharField(max_length=100)
+    status = models.IntegerField(choices=STATUS, default=1)
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "secured_resource"
+
     def __str__(self):
-        return str(self.id) + ' - Type:' + str(self.Type) + ' - Status:' + str(self.Status) + ' - ' + str(self.DateTime)
+        formatted_string = f"id: {self.id}, type: {self.get_string(TYPES)}, \
+            status: {self.get_string(STATUS)}, date: {self.date}"
+        if self.res_type == 1:
+            return f"url: {self.url}, {formatted_string}"
+        return f"file: {self.res_file}, {formatted_string}"
+
+    def model(self):
+        return self.SecuredResource
+
+    @staticmethod
+    def fields():
+        return ('res_type', 'url', 'res_file')
+
+    @staticmethod
+    def field_password():
+        return ('password',)
+
+    def get_string(self, tuple):
+        return tuple[self.res_type-1][1]
+
 
 class SecuredResourceStatistics(models.Model):
-    resource = models.OneToOneField(SecuredResource, on_delete=models.CASCADE, primary_key=True, related_name='resstat')
-    Date = models.DateField(auto_now_add=True)
-    Visited = models.IntegerField(default=0)
+    resource = models.OneToOneField(
+        SecuredResource, on_delete=models.CASCADE, primary_key=True)
+    date = models.DateField(auto_now_add=True)
+    visited = models.IntegerField(default=0)
+
+    class Meta:
+        db_table = "secured_resource_statistics"
+
     def __str__(self):
-        return str(self.resource.id) + ' - ' + 'Type:' + str(self.resource.Type) + ' - ' + 'Date:' + str(self.Date) + ' - ' + "Visited:" + str(self.Visited)
+        return f"{str(self.resource.id)}, type: {SecuredResource.get_string(self.resource, TYPES)}, \
+            date: {self.date}, visited: {self.visited}"
 
 
 @receiver(post_save, sender=User)
 def create_user_stat(sender, instance, created, **kwargs):
     if created:
-        us = UserStatistics.objects.create(user=instance)
+        UserStatistics.objects.create(user=instance)
+
 
 @receiver(post_save, sender=User)
 def save_user_stat(sender, instance, **kwargs):
-    instance.userstat.save()
+    instance.user_stat.save()

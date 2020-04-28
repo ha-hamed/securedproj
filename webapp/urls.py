@@ -1,16 +1,22 @@
 from django.urls import path
-from . import views
 
-app_name = 'mainapp'    # For namespace. it is important to avoid name problems in {% url %}
+from webapp.views import (CreateSecuredResource, GetResult,
+                          GetSecuredResource)
+
+# for namespace, it is important to avoid name problems in {% url %}
+app_name = "mainapp"
 
 urlpatterns = [
-    # To create new Secured Resource
-    path('', views.SecuredResourceCreate.as_view(),name='SecuredResourceCreate'), # Login Required
+    # to create new secured resource
+    path("", CreateSecuredResource.as_view(),
+         name="create_secured_resource"),  # loging required
 
-    # Show Link and Password of created Resource
-    path('GetResult/<int:id>', views.getResult.as_view(),name='getResult'), # Login Required
+    # show link and password of created resource
+    path("get_result/<int:id>", GetResult.as_view(),
+         name="get_result"),  # login Required
 
-    # Access saved Secured resource by entering password here
-    path('files/<str:UID>', views.getSecuredResourceFile.as_view(),name='getSecuredResourceFile'), # Open to Anonymous Users
+    # access saved Secured resource by entering password here
+    path("files/<str:uid>", GetSecuredResource.as_view(),
+         name="get_secured_resource"),  # open to anonymous users
 
 ]
