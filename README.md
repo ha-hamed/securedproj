@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/abedinski/securedproj.svg?branch=master)](https://travis-ci.com/abedinski/securedproj)
+
 # Secured system to transfer files and URL addresses
 
 ## Features
