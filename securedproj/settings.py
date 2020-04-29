@@ -17,11 +17,10 @@ import dj_database_url
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Quick-start development settings - unsuitable for production
 SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY", "u@=5c$x7w4t9p#*@*(&s5a@3guf*7l%5pc6ulpu7nryw16666i")
 
-DEBUG = os.environ.get("DJANGO_DEBUG", True)
+DEBUG = False
 
 ALLOWED_HOSTS = ["securedproj.herokuapp.com", "localhost", "127.0.0.1"]
 
