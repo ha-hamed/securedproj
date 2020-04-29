@@ -36,9 +36,7 @@ def destroy_link():
     objects = SecuredResource.objects.filter(
         status=1, date__lte=timezone.now() - DIFF).update(status=2)
 
-    if objects:
-        logger.info(f"set {objects} resources expired")
-    logger.info("no expired resources found")
+    logger.info(f"set {objects} resources expired")
 
     return threading.Timer(WAIT_SECONDS, destroy_link).start()
 
