@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY", "u@=5c$x7w4t9p#*@*(&s5a@3guf*7l%5pc6ulpu7nryw16666i")
 
-DEBUG = os.environ.get("DJANGO_DEBUG", False)
+DEBUG = os.environ.get("DJANGO_DEBUG", True)
 
 ALLOWED_HOSTS = ["securedproj.herokuapp.com", "localhost", "127.0.0.1"]
 

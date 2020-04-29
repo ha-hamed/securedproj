@@ -1,5 +1,6 @@
 import datetime
 import logging
+import sys
 import threading
 
 from django.contrib.auth.decorators import login_required
@@ -39,12 +40,12 @@ def destroy_link():
         logger.info(f"set {objects} resources expired")
     logger.info("no expired resources found")
 
-    threading.Timer(WAIT_SECONDS, destroy_link).start()
-    return
+    return threading.Timer(WAIT_SECONDS, destroy_link).start()
 
 
 # run link destroyer periodically with WAIT_SECONDS Interval
-threading.Timer(WAIT_SECONDS, destroy_link).start()
+if "runserver" in sys.argv:
+    destroy_link()
 
 # =========================
 #   Class Based Views

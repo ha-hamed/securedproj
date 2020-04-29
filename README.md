@@ -87,14 +87,13 @@
 - cd to project folder.
 - `docker-compose up -d --build` - Docker all set.
 - Update `settings.py` to reflect database`.
-- Make migrations `docker-compose exec web python manage.py makemigrations`.
-- `IFF` there are migragtions `then` migrate database `docker-compose exec web python manage.py migrate`.
+- Migrate `docker-compose exec web python manage.py migrate`.
 - Create a super user `docker-compose exec web python manage.py createsuperuser` since the app requires using the admin.
 - http://127.0.0.1:8000/admin is accessible and homepage via login.
 - Once finished `docker-compose down`.
 
 ## Tests
-- `docker-compose exec web python manage.py test`
+- `docker-compose run web python manage.py test`
 
 ## Requirements
 - Django
