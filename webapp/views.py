@@ -44,7 +44,7 @@ def destroy_link():
 
 
 # run link destroyer periodically with WAIT_SECONDS Interval
-if "runserver" in sys.argv:
+if "manage.py" not in sys.argv:
     destroy_link()
 
 # =========================
